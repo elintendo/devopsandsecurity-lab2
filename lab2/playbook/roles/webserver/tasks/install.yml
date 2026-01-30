@@ -1,0 +1,22 @@
+---
+- name: Install required system packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ required_packages }}"
+  loop_control:
+    label: "{{ item }}" # Reduces log noise
+  register: apt_result
+  retries: 3
+  delay: 5
+  until: apt_result is succeeded
+
+- name: Remove broken site config to allow module enabling
+  ansible.builtin.file:
+    path: /etc/apache2/sites-enabled/000-default.conf
+    state: absent
+
+- name: Enable Apache headers module
+  community.general.apache2_module:
+    state: present
+    name: headers

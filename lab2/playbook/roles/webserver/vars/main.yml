@@ -1,0 +1,5 @@
+# OS-specific constants or variables intended not to be overwritten
+required_packages:
+  - git
+  - apache2
+  - acl

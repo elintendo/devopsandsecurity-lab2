@@ -1,0 +1,26 @@
+---
+- name: Generate unique deployment ID
+  ansible.builtin.set_fact:
+    deployment_id: "{{ ansible_date_time.iso8601_basic_short }}-{{ env_name }}"
+
+- name: Deploy custom Apache configuration
+  ansible.builtin.template:
+    src: apache.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart apache
+
+- name: Enable the Apache site (Create Symlink)
+  ansible.builtin.file:
+    src: /etc/apache2/sites-available/000-default.conf
+    dest: /etc/apache2/sites-enabled/000-default.conf
+    state: link
+  notify: Restart apache
+
+- name: Ensure Apache is enabled and running
+  ansible.builtin.service:
+    name: "{{ apache_service_name }}"
+    state: started
+    enabled: true

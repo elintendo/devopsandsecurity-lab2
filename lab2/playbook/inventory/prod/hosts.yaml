@@ -1,0 +1,8 @@
+all:
+  children:
+    webservers:  # <-- Changed from 'redis' to 'webservers'
+      hosts:
+        prod-env:
+          ansible_host: 109.73.193.65
+          ansible_user: root
+          ansible_ssh_public_key_file: "~/.ssh/photozai.pub"

@@ -1,0 +1,30 @@
+---
+- name: Configure Webservers and Deploy App
+  hosts: webservers
+  become: true
+  
+  # Variable Precedence:
+  # 1. Extra vars (command line)
+  # 2. Playbook vars
+  # 3. Inventory vars (group_vars)
+  # 4. Role defaults
+  
+  vars_files:
+    - ../inventory/vault.yml
+
+  pre_tasks:
+    - name: Announce deployment start (Delegate + Run Once)
+      ansible.builtin.debug:
+        msg: "Starting deployment on {{ env_name }} environment. Controlled by {{ ansible_host }}"
+      run_once: true
+      delegate_to: localhost
+
+    - name: Update Apt Cache (Raw usage avoided elsewhere, allowed here for bootstrap)
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+      changed_when: false
+
+  roles:
+    - role: webserver
+      tags: ["web", "apache"]

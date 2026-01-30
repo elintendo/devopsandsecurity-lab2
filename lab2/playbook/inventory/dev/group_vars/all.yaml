@@ -1,0 +1,4 @@
+http_port: 8080
+server_admin: "devops@dev-env.com"
+env_name: dev
+git_repo_url: "https://github.com/wagoodman/dive"

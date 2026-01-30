@@ -1,0 +1,4 @@
+http_port: 80
+server_admin: "admin@prod-env.com"
+env_name: prod
+git_repo_url: "https://github.com/wagoodman/dive"

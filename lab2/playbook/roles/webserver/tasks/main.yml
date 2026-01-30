@@ -1,0 +1,11 @@
+---
+# Main entry point
+
+- name: Setup Prerequisites
+  import_tasks: install.yml
+
+- name: Configure Apache
+  import_tasks: configure.yml
+
+- name: Deploy Application Code
+  import_tasks: deploy.yml

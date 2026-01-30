@@ -1,0 +1,18 @@
+<VirtualHost *:{{ http_port }}>
+    ServerAdmin {{ server_admin }}
+    DocumentRoot {{ repo_dest }}
+
+    # Custom Header using Vault Secret
+    Header set X-Deployment-Secret "{{ app_secret_token }}"
+    # Fact usage
+    Header set X-Deployment-ID "{{ deployment_id }}"
+
+    <Directory {{ repo_dest }}>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
